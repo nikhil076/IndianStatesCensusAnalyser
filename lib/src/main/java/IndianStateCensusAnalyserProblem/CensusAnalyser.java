@@ -67,6 +67,19 @@ public class CensusAnalyser {
 		} catch (IOException e) {
 			throw new IndianCensusAnalyserException(IndianCensusAnalyserException.CensusException.CENSUS_FILE_PROBLEM,
 					"Incorrect File");
+		} catch (RuntimeException e) {
+			if (ExceptionUtils.indexOfType(e, CsvDataTypeMismatchException.class) != -1) {
+				if (e.getMessage().equalsIgnoreCase("CSV Header contains Error")) {
+					throw new IndianCensusAnalyserException(
+							IndianCensusAnalyserException.CensusException.INCORRECT_HEADER_PROBLEM, "Incorrect Header");
+				} else {
+					throw new IndianCensusAnalyserException(
+							IndianCensusAnalyserException.CensusException.DELIMITER_ISSUE, "Incorrect Delimiter Issue");
+				}
+			} else {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
 		}
 	}
 }
