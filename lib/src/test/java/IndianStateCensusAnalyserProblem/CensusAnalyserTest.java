@@ -31,4 +31,15 @@ public class CensusAnalyserTest {
 	        }
 	    }
 
+	 @Test
+	    public void givenIncorrectCSVFile_ThrowExceptionForIncorrectCSVFile() {
+	        try {
+	        	CensusAnalyser stateCensusAnalyserMain = new CensusAnalyser();
+	            ExpectedException exception = ExpectedException.none();
+	            exception.expect(IndianCensusAnalyserException.class);
+	            stateCensusAnalyserMain.loadIndianStateCensusData(INCORRECT_CSV_FILE);
+	        } catch (IndianCensusAnalyserException e) {
+	            assertEquals(IndianCensusAnalyserException.CensusException.INCORRECT_TYPE_ISSUE, e.exceptionType);
+	        }
+	    }
 }
