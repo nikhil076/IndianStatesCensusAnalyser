@@ -5,9 +5,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -49,6 +47,24 @@ public class CensusAnalyser {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
+		}
+	}
+
+	public int loadIndianStateCode(String StateCodefilePath) {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(StateCodefilePath));
+			CsvToBeanBuilder<IndiaStateCodeCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+			csvToBeanBuilder.withType(IndiaStateCodeCSV.class);
+			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			CsvToBean<IndiaStateCodeCSV> csvToBean = csvToBeanBuilder.build();
+			Iterator<IndiaStateCodeCSV> censusCSVIterator = csvToBean.iterator();
+			int numberOfEntries = 0;
+			while (censusCSVIterator.hasNext()) {
+				numberOfEntries++;
+				IndiaStateCodeCSV censusCSV = censusCSVIterator.next();
+			}
+			return numberOfEntries;
+		} catch (IOException e) {
 		}
 	}
 }
