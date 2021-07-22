@@ -50,7 +50,7 @@ public class CensusAnalyser {
 		}
 	}
 
-	public int loadIndianStateCode(String StateCodefilePath) {
+	public int loadIndianStateCode(String StateCodefilePath) throws IndianCensusAnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(StateCodefilePath));
 			CsvToBeanBuilder<IndiaStateCodeCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
@@ -65,6 +65,8 @@ public class CensusAnalyser {
 			}
 			return numberOfEntries;
 		} catch (IOException e) {
+			throw new IndianCensusAnalyserException(IndianCensusAnalyserException.CensusException.CENSUS_FILE_PROBLEM,
+					"Incorrect File");
 		}
 	}
 }
